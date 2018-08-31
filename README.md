@@ -1,7 +1,7 @@
 # Readme
 ## TestU
 
-### **Constributors**
+### **Contributors**
 
 
 - Gabriela Martínez
