@@ -5,7 +5,6 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 // Requiring passport as we've configured it
 var passport = require("./config/passport");
-var firebase=require("firebase");
 
 // Setting up port and requiring models for syncing
 var PORT = process.env.PORT || 3001;
@@ -37,17 +36,6 @@ app.use(function(req, res, next) {
 // Requiring our routes
 require("./routes/html-routes.js")(app);
 require("./routes/api-routes.js")(app);
-
-//Firebase
-var config={
-  apiKey:process.env.API_KEY,
-  authDomain: "testu-cb1cc.firebaseapp.com",
-  databaseURL: "https://testu-cb1cc.firebaseio.com",
-  projectId: "testu-cb1cc",
-  storageBucket: "testu-cb1cc.appspot.com",
-  messagingSenderId: "965313007323"
-};
-firebase.initializeApp(config);
 
 
 
