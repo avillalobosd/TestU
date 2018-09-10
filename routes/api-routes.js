@@ -3,10 +3,7 @@ var db = require("../models");
 //var passport = require("../config/passport");
 const jwt = require('jsonwebtoken');
 var bcrypt = require("bcrypt-nodejs");
-//multer config
-const path = require("path");
-//add multer to manage multipart form
-const multer = require("multer");
+
 
 
 
@@ -42,7 +39,8 @@ module.exports = function (app) {
           jwt.sign({ user }, "secretkey", { expiresIn: "24h" }, (err, tk) => {
             res.json({
               token: tk,
-              role: user.role
+              role: user.role,
+              empresa:user.empresa
             });
             console.log("Este es el token: " + token);
           });
@@ -141,6 +139,38 @@ module.exports = function (app) {
     })
     .catch(function(err){
       console.log(err)
+      console.log(err)
+      res.json(err)
+    })
+  })
+
+  //Api Route to create a course
+  app.post("/api/curso",(req,res)=>{
+    console.log(req.body);
+    db.Curso.create({
+      curso:req.body.curso,
+      empresa:req.body.empresa
+    })
+    .then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      res.json(err)
+    })
+  })
+
+  //Api Route to get course by empresa
+  app.get("/api/curso/:empresa",(req,res)=>{
+    db.Curso.findAll({
+       where:{
+        empresa:req.params.empresa
+      }
+    })
+    .then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      console.log(err)
       res.json(err)
     })
   })
@@ -159,6 +189,8 @@ module.exports = function (app) {
           console.log(err)
         })
       });
+
+  
 
   
 
