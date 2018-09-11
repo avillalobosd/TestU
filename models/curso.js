@@ -7,6 +7,11 @@ module.exports = function (sequelize, DataTypes) {
         empresa:{
             type:DataTypes.STRING,
             allowNull:false,
+        },
+        Material:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            defaultValue:false,
         }
 
     });
