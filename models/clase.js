@@ -1,14 +1,21 @@
 module.exports = function(sequelize, DataTypes) {
     var Clase = sequelize.define("Clase", {
       // The email cannot be null, and must be a proper email before creation
-      clase: {
+      curso: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       // The password cannot be null
       documento: {
         type: DataTypes.STRING,
-        allowNull: false
+      },
+      ubicacion:{
+        type:DataTypes.STRING,
+        allowNull:false
+      },
+      empresa:{
+        type:DataTypes.STRING,
+        allowNull:false
       }
 
     });

@@ -175,13 +175,30 @@ module.exports = function (app) {
     })
   })
 
+  //Borrar curso
+  app.post("/curso/delete",(req,res)=>{
+    db.Curso.destroy({
+      where:{
+        id:req.body.id
+      }
+    })
+    .then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
+  })
 
-  //-----Manage the post requests.
+
+  //Añadir material para el curso
   app.post("/upload", (req, res, ) => {
         console.log(req.body)
         db.Clase.create({
-          clase: req.body.clase,
-          documento: req.body.documento
+          curso:req.body.curso,
+          ubicacion: req.body.ubicacion,
+          documento: req.body.documento,
+          empresa:req.body.empresa
         }).then(data => {
           res.json(data)
         })
