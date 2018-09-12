@@ -95,8 +95,15 @@ module.exports = function (app) {
   });
 
   //* Route for getting all uploaded documents
-  app.get("/api/documentos", (req, res) => {
-    db.Clase.findAll()
+  app.get("/api/documentos/:empresa", (req, res) => {
+    db.Clase.findAll({
+      where:{
+        empresa:req.params.empresa
+      },
+      order:[
+        ["curso","ASC"]
+      ]
+    })
       .then(data => {
         res.json(data)
       })
@@ -189,6 +196,23 @@ module.exports = function (app) {
       console.log(err)
     })
   })
+
+  //Borar Material
+  app.post("/documento/delete",(req,res)=>{
+    db.Clase.destroy({
+      where:{
+        id:req.body.id
+      }
+    })
+    .then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
+  })
+
+ 
 
 
   //Añadir material para el curso
