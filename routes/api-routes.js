@@ -95,10 +95,45 @@ module.exports = function (app) {
   });
 
   //* Route for getting all uploaded documents
-  app.get("/api/documentos", (req, res) => {
-    db.Clase.findAll()
+  app.get("/api/documentos/:empresa", (req, res) => {
+    db.Clase.findAll({
+      where:{
+        empresa:req.params.empresa
+      },
+      include:[db.Curso],
+     order:[
+        [db.Curso, "curso","ASC"]
+      ]
+      
+    })
       .then(data => {
         res.json(data)
+      })
+      .catch(function (err) {
+        console.log(err)
+        res.json(err)
+      })
+
+  })
+
+  //* Route to get documents per curso
+  app.get("/api/documentocurso/:id", (req, res) => {
+    db.Clase.findAll({
+      where:{
+        CursoId:req.params.id
+      },
+      include:[db.Curso],
+     order:[
+        [db.Curso, "curso","ASC"]
+      ]
+      
+    })
+      .then(data => {
+        if(data.length>0){
+        res.json({mensaje:"Si"})
+        }
+        else
+        res.json({mensaje:"No"})
       })
       .catch(function (err) {
         console.log(err)
@@ -159,9 +194,13 @@ module.exports = function (app) {
     })
   })
 
-  //Api Route to get course by empresa
+  //Api Route to get course by empresa and find associates
   app.get("/api/curso/:empresa",(req,res)=>{
     db.Curso.findAll({
+      /*attribitutes:{
+        include:[[Sequelize.fn("COUNT",Sequelize.col("clases.id"),"claseCount")]]
+      },*/
+      include:[db.Clase,db.preguntas],
        where:{
         empresa:req.params.empresa
       }
@@ -176,8 +215,23 @@ module.exports = function (app) {
   })
 
   //Borrar curso
-  app.post("/curso/delete",(req,res)=>{
+  app.delete("/borrar/curso/:id",(req,res)=>{
     db.Curso.destroy({
+      where:{
+        id:req.params.id
+      }
+    })
+    .then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
+  })
+
+  //Borrar Material
+  app.post("/documento/delete",(req,res)=>{
+    db.Clase.destroy({
       where:{
         id:req.body.id
       }
@@ -190,12 +244,14 @@ module.exports = function (app) {
     })
   })
 
+ 
+
 
   //Añadir material para el curso
   app.post("/upload", (req, res, ) => {
         console.log(req.body)
         db.Clase.create({
-          curso:req.body.curso,
+          CursoId:req.body.CursoId,
           ubicacion: req.body.ubicacion,
           documento: req.body.documento,
           empresa:req.body.empresa
@@ -207,8 +263,47 @@ module.exports = function (app) {
         })
       });
 
-  
+  //*Añadir Pregunta a Curso
+  app.post("/api/pregunta",(req,res)=>{
+    db.preguntas.create({
+      CursoId:req.body.CursoId,
+      pregunta:req.body.pregunta,
+      Empresa:req.body.Empresa
+    }).then(data=>{
+      res.json(data)
+    })
+    .catch(function(err){
+      console.log(err)
+    })
+  })
 
+  //*Ver preguntas del curso
+  app.get("/api/pregunta/:curso",(req,res)=>{
+    db.preguntas.findAll({
+      where:{
+        CursoId:req.params.curso
+      },
+      include:[db.Respuesta]
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+  })
+
+
+  //*Añadir respuestas
+  app.post("/api/respuestas",(req,res)=>{
+    db.Respuesta.create({
+      Respuesta:req.body.Respuesta,
+      Correcta:req.body.Correcta,
+      preguntaId:req.body.preguntaId
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+  })
   
 
 
