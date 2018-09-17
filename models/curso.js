@@ -24,7 +24,13 @@ module.exports = function (sequelize, DataTypes) {
         });
         Curso.hasMany(models.preguntas,{
             onDelete:"cascade"
-        })
+        });
+        Curso.hasOne(models.Examen,{
+            onDelete:"cascade"
+        });
+        Curso.hasMany(models.Contestado,{
+            onDelete:"cascade"
+        });
       };
 
 
