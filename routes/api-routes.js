@@ -80,6 +80,28 @@ module.exports = function (app) {
   });
 
  
+//* Route to get user by id
+app.get("/api/UserOne/:id", (req, res) => {
+  console.log(req.params.id);
+  db.User.findOne({
+    where:{
+      id: req.params.id
+    }
+    
+  })
+    .then(data => {
+
+      res.json({
+        nombre: data.FirstName, 
+        apellido: data.LastName,
+      picture: data.Picture})
+    });
+  
+
+});
+
+
+
   // Route for getting some data about our user to be used client side
   app.get("/api/user_data", verifyToken, (req, res) => {
     jwt.verify(req.token, "secretkey", (err, authData) => {
@@ -93,6 +115,8 @@ module.exports = function (app) {
       }
     })
   });
+
+  
 
   //* Route for getting all uploaded documents
   app.get("/api/documentos/:empresa", (req, res) => {
