@@ -22,6 +22,11 @@ module.exports = function (sequelize, DataTypes) {
                 allowNull: false
             }
         });
+        Respuesta.hasMany(models.Contestado,{
+            onDelete:"cascade"
+        });
+       
+        
     };
 
     return Respuesta;
