@@ -450,6 +450,72 @@ module.exports = function (app) {
     })
   })
 
+  //Route to put a user in an exam
+  app.post("/api/examen",function(req,res){
+    db.Examen.create({
+      CursoId:req.body.CursoId,
+      UserId:req.body.UserId,
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+
+  })
+
+  //Sacar el numero total de preguntas
+  //*Ver preguntas del curso
+  app.get("/api/numpregunta/:curso", (req, res) => {
+    db.preguntas.findAndCountAll({
+      where: {
+        CursoId: req.params.curso
+      }
+    }).then(data => {
+      res.json(data)
+    }).catch(function (err) {
+      console.log(err)
+    })
+  })
+
+  app.put("/api/calificacion",(req,res)=>{
+    db.Examen.update({
+      Calificacion:req.body.Calificacion
+    },
+    {
+      where:{
+        UserId:req.body.UserId,
+        CursoId:req.body.CursoId
+      }
+      
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+  })
+
+  app.get("/api/tomados/:user/:curso",(req,res)=>{
+    db.Examen.findOne({
+      where:{
+        UserId:req.params.user,
+        CursoId:req.params.curso
+      }
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+  })
+
+  app.get("/api/examen",(req,res)=>{
+    db.Examen.findAll({
+      include:[db.User,db.Curso]
+    }).then(data=>{
+      res.json(data)
+    }).catch(function(err){
+      console.log(err)
+    })
+  })
 
 
 

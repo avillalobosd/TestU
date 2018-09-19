@@ -51,6 +51,9 @@ module.exports = function(sequelize, DataTypes) {
     User.hasMany(models.Contestado,{
         onDelete:"cascade"
     });
+    User.hasMany(models.Examen,{
+      onDelete:"cascade"
+    });
    
   };
 

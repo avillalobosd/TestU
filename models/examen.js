@@ -4,6 +4,9 @@ module.exports = function(sequelize, DataTypes) {
         type: DataTypes.INTEGER,
         allowNull:false,
         defaultValue:0
+      },
+      Calificacion:{
+        type:DataTypes.INTEGER,
       }
   
     });
@@ -18,6 +21,12 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false
         }
       });
+      Examen.belongsTo(models.User,{
+        onDelete:"cascade",
+        foreignKey:{
+          allowNull:false
+        }
+      })
   
     };
     return Examen;
