@@ -4,7 +4,7 @@
     "password": "root",
     "database": "passport_demo",
     "host": "127.0.0.1",
-    "port": 3306,
+    "port": 3307,
     "dialect": "mysql"
   },
   "test": {
@@ -16,7 +16,7 @@
   },
   "production": {
     "username": "root",
-    "password": null,
+    "password": "testu",
     "database": "database_production",
     "host": "127.0.0.1",
     "dialect": "mysql"
