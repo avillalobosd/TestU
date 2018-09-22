@@ -531,9 +531,14 @@ app.get("/api/UserOne/:id", (req, res) => {
     })
   })
 
-  app.get("/api/examen",(req,res)=>{
+  app.get("/api/examen/:empresa",(req,res)=>{
     db.Examen.findAll({
-      include:[db.User,db.Curso]
+      include:[{
+        model:db.User,
+        where:{
+          empresa:req.params.empresa
+        }},
+        {model:db.Curso}]
     }).then(data=>{
       res.json(data)
     }).catch(function(err){
